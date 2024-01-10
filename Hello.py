@@ -13,38 +13,62 @@
 # limitations under the License.
 
 import streamlit as st
+import pandas as pd
 from streamlit.logger import get_logger
 
 LOGGER = get_logger(__name__)
 
 
 def run():
+    
+    @st.cache
+    def convert_df(df):
+        # IMPORTANT: Cache the conversion to prevent computation on every rerun
+        return df.to_csv().encode('utf-8')
+
     st.set_page_config(
-        page_title="Hello",
+        page_title="EY_Streamlit",
         page_icon="👋",
     )
 
-    st.write("# Welcome to Streamlit! 👋")
-
-    st.sidebar.success("Select a demo above.")
-
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
+    st.write("# EY to Streamlit Demo! 👋")
+    
+    df = pd.DataFrame(
+    [
+        {"EY Operations": "Gen AI Solutions", "Project Implementaion": 20, "Download Project Impact": True},
+        {"EY Operations": "Data Science", "Project Implementaion": 50, "Download Project Impact": True},
+        {"EY Operations": "Machine Learning", "Project Implementaion": 40, "Download Project Impact": True},
+    ]
     )
+    prompt = st.chat_input("Say something")
+
+    csv = convert_df(df)
+
+    st.dataframe(df, use_container_width=True)
+    st.bar_chart(data=df,  x="EY Operations", y="Project Implementaion",  color=None, width=0, height=0, use_container_width=True)
+    st.download_button(label= "Download Project Impact", data=csv, file_name='Project_Impact.csv',mime='text/csv')
+    if prompt:
+      st.write(f"User has sent the following prompt: {prompt}")
+
+    # st.sidebar.success("Select a demo above.")
+
+    # st.markdown(
+    #     """
+    #     Streamlit is an open-source app framework built specifically for
+    #     Machine Learning and Data Science projects.
+    #     **👈 Select a demo from the sidebar** to see some examples
+    #     of what Streamlit can do!
+    #     ### Want to learn more?
+    #     - Check out [streamlit.io](https://streamlit.io)
+    #     - Jump into our [documentation](https://docs.streamlit.io)
+    #     - Ask a question in our [community
+    #       forums](https://discuss.streamlit.io)
+    #     ### See more complex demos
+    #     - Use a neural net to [analyze the Udacity Self-driving Car Image
+    #       Dataset](https://github.com/streamlit/demo-self-driving)
+    #     - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
+    # """
+    # )
 
 
 if __name__ == "__main__":
