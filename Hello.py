@@ -48,7 +48,7 @@ def run():
     st.bar_chart(data=df,  x="EY Operations", y="Project Implementaion",  color=None, width=0, height=0, use_container_width=True)
     st.download_button(label= "Download Project Impact", data=csv, file_name='Project_Impact.csv',mime='text/csv')
     if prompt:
-      st.write(f"User has sent the following prompt: {prompt}")
+      st.write(f"User has sent the following prompt: {prompt} {LOGGER}")
 
     # st.sidebar.success("Select a demo above.")
 
